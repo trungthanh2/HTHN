@@ -75,6 +75,23 @@ class _HomeScreenState extends State<HomeScreen> {
         title: const Text('Giám sát cây trồng - Web'),
         actions: [
           IconButton(
+            icon: const Icon(Icons.cloud_upload),
+            tooltip: 'Gửi dữ liệu mẫu',
+            onPressed: () async {
+              if (user != null) {
+                await FirebaseService().sendSensorData("sensor_demo", {
+                  "temp": 28,
+                  "humidity": 65,
+                  "soil": 400,
+                  "light": 600,
+                });
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Đã gửi dữ liệu mẫu!')),
+                );
+              }
+            },
+          ),
+          IconButton(
             onPressed: () async {
               await FirebaseAuth.instance.signOut();
             },
@@ -112,7 +129,6 @@ class _HomeScreenState extends State<HomeScreen> {
                               humidity: sensor.humidity,
                               soil: sensor.soil,
                               light: sensor.light,
-                             
                             ),
                           ),
                           const SizedBox(height: 6),

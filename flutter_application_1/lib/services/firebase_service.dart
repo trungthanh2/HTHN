@@ -66,4 +66,15 @@ class FirebaseService {
       }
     });
   }
+    Future<void> sendSensorData(String sensorId, Map<String, dynamic> data) async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) {
+      throw Exception("Người dùng chưa đăng nhập");
+    }
+
+    final databaseRef = FirebaseDatabase.instance.ref("Users/${user.uid}/Sensors");
+    await databaseRef.child(sensorId).set(data);
+  }
 }
+
+
